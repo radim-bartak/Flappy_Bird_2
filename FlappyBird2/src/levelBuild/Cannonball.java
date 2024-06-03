@@ -51,14 +51,15 @@ public class Cannonball implements ImageImport {
         g.drawImage(img,(int) x,(int) y, width, height,null);
     }
 
+    //method for moving the cannonball
     public void move() {
         x -= moveSpeedX;
         if(x<1120){
-            moveSpeedX = 3.8;
+            moveSpeedX = 3.8; //moves with the cannon
         }else{
-            moveSpeedX = 0.7;
+            moveSpeedX = 0.7; //it is shot from the cannon
         }
-        if(x<900){
+        if(x<900){ //if the cannonball leaves the screen, its object moves back to the cannon
             y += moveSpeedY-(x*0.001);
         }
 

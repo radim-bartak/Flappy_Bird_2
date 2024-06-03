@@ -48,11 +48,12 @@ public class Cannon implements ImageImport {
         g.drawImage(img,(int) x,(int) y, width, height,null);
     }
 
+    //method for moving the cannon
     public void move(){
-        if(x > 1120){
+        if(x > 1120){ //moves the cannon to the right side of the screen after the player begins playing
             x -= moveSpeedX;
         }else{
-            if(falling){
+            if(falling){ //cannon starts to move up and down
                 y += moveSpeedY;
                 if(y >= 570){
                     falling = false;

@@ -30,6 +30,7 @@ public class ModeButton extends Button{
         importImg();
     }
 
+    //method for importing images of buttons from file
     @Override
     public void importImg() {
         btnImgs = new BufferedImage[2];
@@ -41,18 +42,21 @@ public class ModeButton extends Button{
         }
 
         for(int i=0;i<btnImgs.length;i++){
-            btnImgs[i] = img.getSubimage(i * width,rowIndex*height,width,height);
+            btnImgs[i] = img.getSubimage(i * width,rowIndex*height,width,height); //saves pressed and unpressed images of a button to a field
+            //the type of the button is given by the row index of the object
         }
     }
 
+    //method for rendering pressed or unpressed menu buttons according to index of the object
     @Override
     public void render(Graphics g) {
         g.drawImage(btnImgs[index],(int) x,(int) y, (int) (width/1.7),(int) (height/1.7),null);
     }
 
+    //method that makes the button visible
     @Override
     public void moveUp(){
-        if(y >= lockY && !shop){
+        if(y >= lockY && !shop){ //button moves up from offscreen with the menu until it is stopped by the lock
             y -= moveSpeed;
         }else if(y >= lockY - 800 && shop){
             y -= moveSpeed;
@@ -60,9 +64,10 @@ public class ModeButton extends Button{
         hitbox.y = (int) y;
     }
 
+    //method that makes the button not visible
     @Override
     public void moveDown(){
-        if(y <= 880 + lockY){
+        if(y <= 880 + lockY){ //button moves down offscreen
             y += moveSpeed;
         }
         hitbox.y = (int) y;

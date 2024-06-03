@@ -11,8 +11,8 @@ import java.util.Objects;
 
 public class ToggleMenuButton implements ImageImport{
 
-    private double x;
-    private double y;
+    private int x;
+    private int y;
     private int width;
     private int height;
     private int index;
@@ -22,7 +22,7 @@ public class ToggleMenuButton implements ImageImport{
     private boolean mousePressed;
     private Rectangle hitbox;
 
-    public ToggleMenuButton(double x,double y, int width, int height, int index, GameState gameState) {
+    public ToggleMenuButton(int x,int y, int width, int height, int index, GameState gameState) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -31,10 +31,10 @@ public class ToggleMenuButton implements ImageImport{
         this.gameState = gameState;
 
         importImg();
-        hitbox = new Rectangle((int) x,(int) y,width,height);
+        hitbox = new Rectangle(x,y,width,height);
     }
 
-
+    //method for importing images of buttons from file
     @Override
     public void importImg() {
         buttonImgs = new BufferedImage[2];
@@ -46,43 +46,39 @@ public class ToggleMenuButton implements ImageImport{
         }
 
         for(int i=0;i<buttonImgs.length;i++){
-            buttonImgs[i] = img.getSubimage(i * width, 0, width, height);
+            buttonImgs[i] = img.getSubimage(i * width, 0, width, height); //saves pressed and unpressed images of a button to a field
         }
     }
 
+    //method for rendering pressed or unpressed menu buttons according to index of the object
     @Override
     public void render(Graphics g) {
-        g.drawImage(buttonImgs[index],(int) x,(int) y, width, height,null);
+        g.drawImage(buttonImgs[index], x, y, width, height,null);
     }
 
-    public void update(){
-        if(gameState == GameState.START || gameState == GameState.GAME_OVER || gameState == GameState.MENU){
-            if(index == 1){
-                if(mousePressed){
-                    y = -100;
-                }
-            }
+    //method for updating the visibility of the button
+    public void updateVisibility(){
+        if(gameState == GameState.PLAYING){ //button becomes not visible in the playing game state
+            y = - 100;
         }else{
-            y = -100;
+            y = 20;
         }
-
-        hitbox.x = (int) x;
-        hitbox.y = (int) y;
+        hitbox.y = y;
     }
 
-    public double getX() {
+    public int getX() {
         return x;
     }
 
-    public void setX(double x) {
+    public void setX(int x) {
         this.x = x;
     }
 
-    public double getY() {
+    public int getY() {
         return y;
     }
 
-    public void setY(double y) {
+    public void setY(int y) {
         this.y = y;
     }
 

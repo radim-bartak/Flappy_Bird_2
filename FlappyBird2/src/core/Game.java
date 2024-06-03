@@ -54,7 +54,8 @@ public class Game implements Runnable{
     private int coins;
     private int coinsY = 900;
 
-    public Game(){ //Initialization of all objects
+    //Initialization of all objects
+    public Game(){
         bg = new Background(0,0,0.5); //Creates background object
         topPipes = new Pipe[5]; //New array of top pipes objects
         botPipes = new Pipe[5]; //New array of bottom pipes objects
@@ -68,22 +69,22 @@ public class Game implements Runnable{
         player = new Player(300,300,300,444,551,0.5,false,4.5,0); //Creates player object
         cannon = new Cannon(2500,300,2500,300, 114,102,0.7,1, true); //Creates canon object
         cannonball = new Cannonball(2510,310,2510,310,40,40,0.7,1.2,true); //Creates canonball object
-        coin = new Coin(1550,300,1550,300,35,35,1,0.5,true);
+        coin = new Coin(1550,300,1550,300,35,35,1,0.5,true); //Creates coin object
 
         menu_bg = new MenuBackground(640 - 200,1000,1000,10,423,1305,false);
 
         //Initialization of all buttons
-        toggleMenuBtn = new ToggleMenuButton(1200,20,56,57,1,getGameState());
-        menuBtnShop = new MenuButton(640-105,880+280,394,158,280,10,1,0);
-        menuBtnExit = new MenuButton(640-105,880+480,394,158,480,10,1,1);
-        modeBtnDay = new ModeButton(640 - 105, 880+385,134,137,1,385,0,10);
-        modeBtnNight = new ModeButton(690, 880+385,134,137,1,385,1,10);
-        shopBtn1 = new ShopButton(640-115,880+290+800,252,255,1,0,10,290);
+        toggleMenuBtn = new ToggleMenuButton(1200,20,56,57,1,getGameState()); //button of toggling the menu
+        menuBtnShop = new MenuButton(640-105,880+280,394,158,280,10,1,0); //button for toggling the shop in the menu
+        menuBtnExit = new MenuButton(640-105,880+480,394,158,480,10,1,1); //button for exiting the game
+        modeBtnDay = new ModeButton(640 - 105, 880+385,134,137,1,385,0,10); //button for day mode
+        modeBtnNight = new ModeButton(690, 880+385,134,137,1,385,1,10); //button for night mode
+        shopBtn1 = new ShopButton(640-115,880+290+800,252,255,1,0,10,290); //buttons for buying skins in the shop
         shopBtn2 = new ShopButton(677,880+290+800,252,255,1,1,10,290);
         shopBtn3 = new ShopButton(640-115,880+430+800,252,255,1,2,10,430);
         shopBtn4 = new ShopButton(677,880+430+800,252,255,1,3,10,430);
 
-        btns = new Button[]{menuBtnShop, menuBtnExit, modeBtnDay, modeBtnNight, shopBtn1, shopBtn2, shopBtn3, shopBtn4};
+        btns = new Button[]{menuBtnShop, menuBtnExit, modeBtnDay, modeBtnNight, shopBtn1, shopBtn2, shopBtn3, shopBtn4}; //field of all menu buttons
 
         gamePanel = new Panel(this);
         gameWindow = new Window(gamePanel);
@@ -104,8 +105,9 @@ public class Game implements Runnable{
         gameLoop.start();
     }
 
+    //method for game loop thread
     @Override
-    public void run() { //method for game loop thread
+    public void run() {
         double timePerFrame = 1000000000.0 / FPS;
         double timePerTick = 1000000000.0 / TPS;
 
@@ -138,13 +140,13 @@ public class Game implements Runnable{
         }
     }
 
-    public void tick(){ //method for one tick of the game
-        toggleMenuBtn.update();
+    //method for one tick of the game
+    public void tick(){
         switch (gameState){
             case START: //tick while start screen
                 bg.move(); //background moving
                 fl.move(); //floor moving
-                menu_bg.moveDown();
+                menu_bg.moveDown(); //menu and menu buttons move under the screen
                 for (Button btn : btns) {
                     btn.moveDown();
                 }
@@ -156,11 +158,15 @@ public class Game implements Runnable{
                 player.fall(); //player falls and jumps
                 bg.move();
                 fl.move();
-                coin.move();
+                coin.move(); //game objects starts moving
                 cannon.move();
                 cannonball.move();
-                for (Pipe topPipe : topPipes) { //each top pipe moves
-                    topPipe.move();
+
+                toggleMenuBtn.setGameState(GameState.PLAYING);
+                toggleMenuBtn.updateVisibility(); //updates visibility of button for toggling menu
+
+                for (Pipe topPipe : topPipes) {
+                    topPipe.move(); //each top pipe moves
                     if(topPipe.getPipeHitbox().intersects(player.getHitbox())){ //if player collides with pipe then game over
                         gameState = GameState.GAME_OVER;
                     }
@@ -187,15 +193,17 @@ public class Game implements Runnable{
                 if(player.getHitbox().intersects(cannonball.getHitbox())){ //if player collides with a cannonball then game over
                     gameState = GameState.GAME_OVER;
                 }
-                if(player.getHitbox().intersects(coin.getHitbox())){
+                if(player.getHitbox().intersects(coin.getHitbox())){ //if player collects a coin, the coin will add up to the number of collected coins
                     coins++;
-                    coin.setX(coin.getX()+coin.getStartX());
+                    coin.setX(coin.getX()+coin.getStartX()); //after the coin is collected, its object will move to another location
                 }
                 break;
             case GAME_OVER:
+                toggleMenuBtn.setGameState(GameState.GAME_OVER);
+                toggleMenuBtn.updateVisibility(); //updates visibility of button for toggling menu
                 break;
-            case MENU:
-                menu_bg.moveUp();
+            case MENU: //tick while in menu
+                menu_bg.moveUp(); //menu with its buttons moves up so the user can see it
                 for (Button btn : btns) {
                     btn.moveUp();
                 }
@@ -208,7 +216,8 @@ public class Game implements Runnable{
         }
     }
 
-    public void render(Graphics g) throws IOException, FontFormatException { //method for rendering objects of the game
+    //method for rendering objects of the game
+    public void render(Graphics g) throws IOException, FontFormatException {
 
         bg.render(g); //rendering background
         player.render(g); //rendering player
@@ -218,11 +227,11 @@ public class Game implements Runnable{
         for (Pipe botPipe : botPipes) { //rendering bottom pipes from array
             botPipe.render(g);
         }
-        coin.render(g);
+        coin.render(g); //rendering coin
         cannonball.render(g); //rendering cannonball
         fl.render(g); //rendering floor
         cannon.render(g); //rendering canon
-        toggleMenuBtn.render(g);
+        toggleMenuBtn.render(g); //rendering button for toggling the menu
         switch (gameState) {
             case PLAYING: //render when playing
                 g.drawImage(hud,0,0,null);
@@ -232,24 +241,17 @@ public class Game implements Runnable{
                 g.setColor(Color.white);
                 g.drawString(String.valueOf(currentScore), 180, 65); //shows current score
                 g.drawString(String.valueOf(coins), 180, 130); //shows number of collected coins
-
-                toggleMenuBtn.setGameState(GameState.PLAYING);
                 break;
             case GAME_OVER: //render game over screen
-
                 g.drawImage(gameOver,0,0,null); //render game over screen
 
                 g.setFont(font);
                 g.setColor(Color.white);
-
                 g.drawString("HIGHSCORE: " + String.valueOf(highScore), 540, 300); //render high score title
-
-                toggleMenuBtn.setGameState(GameState.GAME_OVER);
 
                 currentScore = 0; //current score resets back to zero
                 break;
             case START: //render start screen
-
                 g.drawImage(start,0,0,null); //render start screen
 
                 player.setY(player.getStartY()); //resets player back to starting position
@@ -261,21 +263,19 @@ public class Game implements Runnable{
                     botPipe.setX(botPipe.getStartX());
                     botPipe.setY(400+(120 + rn.nextInt(80))); //random gap between pipes
                 }
+                //other objects move to their start position
                 coin.setX(coin.getStartX());
                 cannon.setX(cannon.getStartX());
                 cannon.setY(cannon.getStartY());
                 cannonball.setX(cannonball.getStartX());
                 cannonball.setY(cannonball.getStartY());
 
-                toggleMenuBtn.setGameState(GameState.START);
-                toggleMenuBtn.setY(20);
-
                 menu_bg.render(g);
                 for (Button btn : btns) {
                     btn.render(g);
                 }
                 break;
-            case MENU:
+            case MENU: //render menu
                 menu_bg.render(g);
                 for (Button btn : btns) {
                     btn.render(g);
@@ -284,7 +284,7 @@ public class Game implements Runnable{
                 toggleMenuBtn.setGameState(GameState.MENU);
                 toggleMenuBtn.setY(20);
                 }
-
+                //draws the number of coins the player has available to spend in the shop
                 font = new Font("Agency FB",Font.BOLD,45);
                 g.setFont(font);
                 g.setColor(Color.white);

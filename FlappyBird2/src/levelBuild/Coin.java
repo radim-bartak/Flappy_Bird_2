@@ -50,9 +50,10 @@ public class Coin implements ImageImport {
         g.drawImage(img,(int) x,(int) y, width, height,null);
     }
 
+    //method for moving the coin
     public void move(){
         x-=moveSpeedX;
-        if(falling){
+        if(falling){ //coin moves up and down
             y += moveSpeedY;
             if(y >= 400){
                 falling = false;
@@ -63,7 +64,7 @@ public class Coin implements ImageImport {
                 falling = true;
             }
         }
-        if(x<=-50){
+        if(x<=-50){ //if the coin isn't collected, its object moves back to start location
             x=startX-50;
         }
 

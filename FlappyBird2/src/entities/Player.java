@@ -41,7 +41,8 @@ public class Player implements ImageImport {
         hitbox = new Rectangle((int) x,(int) y+48,74,44); //creates hitbox for collision
     }
 
-    public void fall(){ //method for fall of the player
+    //method for fall of the player
+    public void fall(){
         if(jumping){ //if player jumps:
             y -= currentJumpSpeed;
 
@@ -64,6 +65,7 @@ public class Player implements ImageImport {
         hitbox.y = (int) y+48; //hitbox moves with player
     }
 
+    //method for importing images of the birds from file
     @Override
     public void importImg(){
         skins = new BufferedImage[4];
@@ -75,10 +77,11 @@ public class Player implements ImageImport {
         }
 
         for(int i=0;i<skins.length;i++){
-            skins[i] = img.getSubimage(i * width,0,width,height);
+            skins[i] = img.getSubimage(i * width,0,width,height); //each skin is saved in this field
         }
     }
 
+    //method for the bird according to equipped skin
     @Override
     public void render(Graphics g){
         g.drawImage(skins[skin],(int) x,(int) y, (int) width/6, (int) height/6,null);

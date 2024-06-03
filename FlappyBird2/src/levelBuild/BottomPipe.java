@@ -16,7 +16,6 @@ public class BottomPipe extends Pipe{
         super(x, y, startX, moveSpeed, width, height);
     }
 
-
     @Override
     public void importImg() {
         try {
@@ -31,8 +30,9 @@ public class BottomPipe extends Pipe{
         g.drawImage(img, (int) x, (int) y, width, height,null);
     }
 
+    //method for bottom pipe move
     @Override
-    public void move() { //method for bottom pipe move
+    public void move() {
         x -= getMoveSpeed();
         getPipeHitbox().x = (int) x;
         getPipeHitbox().y = (int) y;

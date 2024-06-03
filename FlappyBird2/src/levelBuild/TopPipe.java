@@ -31,8 +31,9 @@ public class TopPipe extends Pipe {
         g.drawImage(img, (int) x, (int) y, width, height,null);
     }
 
+    //method for top pipe move
     @Override
-    public void move() { //method for top pipe move
+    public void move() {
         x -= getMoveSpeed();
         getPipeHitbox().x = (int) x;
         getPipeHitbox().y = (int) y;

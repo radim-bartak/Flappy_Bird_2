@@ -35,6 +35,7 @@ public class MenuButton extends Button{
         hitbox = new Rectangle((int) x,(int) y,(int) (width/1.7),(int) (height/1.7));
     }
 
+    //method for importing images of buttons from file
     @Override
     public void importImg() {
         buttonImgs = new BufferedImage[2];
@@ -46,18 +47,21 @@ public class MenuButton extends Button{
         }
 
         for(int i=0;i<buttonImgs.length;i++){
-            buttonImgs[i] = img.getSubimage(i * 394, rowIndex * 158,394,158);
+            buttonImgs[i] = img.getSubimage(i * width, rowIndex * height, width, height); //saves pressed and unpressed images of a button to a field
+            //the type of the button is given by the row index of the object
         }
     }
 
+    //method for rendering pressed or unpressed menu buttons according to index
     @Override
     public void render(Graphics g) {
         g.drawImage(buttonImgs[index],(int) x,(int) y, (int) (394/1.7),(int) (158/1.7),null);
     }
 
+    //method that makes the button visible
     @Override
     public void moveUp(){
-        if(y >= lockY){
+        if(y >= lockY && !shop){ //button moves up from offscreen with the menu until it is stopped by the lock
             y -= moveSpeed;
         }else if(y >= lockY - 800 && shop){
             y -= moveSpeed;
@@ -65,9 +69,10 @@ public class MenuButton extends Button{
         hitbox.y = (int) y;
     }
 
+    //method that makes the button not visible
     @Override
     public void moveDown(){
-        if(y <= 880 + lockY){
+        if(y <= 880 + lockY){ //button moves down offscreen
             y += moveSpeed;
         }
         hitbox.y = (int) y;

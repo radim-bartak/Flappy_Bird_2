@@ -33,7 +33,8 @@ public class Floor extends Background implements ImageImport {
         g.drawImage(img,(int) x,y,null);
     }
 
-    public void move(){ //Method for moving background
+    //Method for moving background
+    public void move(){
         x -= getMoveSpeed();
 
         if(x < -1280){ //if half of the floor picture is outside the window, the background resets

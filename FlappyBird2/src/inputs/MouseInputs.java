@@ -21,11 +21,12 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
 
     }
 
+    //if the user presses a button, its index changes to 0, which makes it appear as pressed
     @Override
     public void mousePressed(MouseEvent e) {
         switch (gamePanel.getGame().getGameState()){
             case START:
-                if(isInToggleMenuBtn(e,toggleMenuBtn())){
+                if(isInToggleMenuBtn(e,toggleMenuBtn())){ //goes to menu game state if the button toggling the menu is pressed
                     toggleMenuBtn().setIndex(0);
                     toggleMenuBtn().setMousePressed(true);
                     gamePanel.getGame().setGameState(GameState.MENU);
@@ -37,7 +38,7 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
                 gamePanel.getGame().getPlayer().setJumping(true); //player jumps
                 break;
             case GAME_OVER:
-                if(isInToggleMenuBtn(e,toggleMenuBtn())){
+                if(isInToggleMenuBtn(e,toggleMenuBtn())){ //goes to menu game state if the button toggling the menu is pressed
                     toggleMenuBtn().setMousePressed(true);
                     gamePanel.getGame().setGameState(GameState.MENU);
                 }else {
@@ -45,7 +46,7 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
                 }
                 break;
             case MENU:
-                if(isInToggleMenuBtn(e,toggleMenuBtn())){
+                if(isInToggleMenuBtn(e,toggleMenuBtn())){ //goes back to starting state if the button toggling the menu is pressed in the menu
                     toggleMenuBtn().setIndex(0);
                     toggleMenuBtn().setMousePressed(true);
                     gamePanel.getGame().setGameState(GameState.START);
@@ -60,12 +61,13 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
         }
     }
 
+    //if the user releases a button, its use is applied and its index changes back to 1
     @Override
     public void mouseReleased(MouseEvent e) {
         if(toggleMenuBtn().isMousePressed()){
             toggleMenuBtn().setIndex(1);
             toggleMenuBtn().setMousePressed(false);
-            gamePanel.getGame().getMenu_bg().setShop(false);
+            gamePanel.getGame().getMenu_bg().setShop(false); //menu and shop closes
             for(int i = 0; i < btns().length; i++){
                 btns()[i].setShop(false);
             }
@@ -73,32 +75,32 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
         if(gamePanel.getGame().getGameState() == GameState.MENU){
             for(int i = 0; i < btns().length; i++){
                 if(btns()[i].isMousePressed()) {
-                    if (btns()[0].isMousePressed()) {
-                        gamePanel.getGame().getMenu_bg().setShop(true);
+                    if (btns()[0].isMousePressed()) { //shop button
+                        gamePanel.getGame().getMenu_bg().setShop(true); //opens shop
                         for (int j = 0; j < btns().length; j++) {
                             btns()[j].setShop(true);
                         }
-                    } else if (btns()[1].isMousePressed()) {
-                        System.exit(0);
-                    }else if(btns()[2].isMousePressed()){
+                    } else if (btns()[1].isMousePressed()) { //exit button
+                        System.exit(0); //exits the game
+                    }else if(btns()[2].isMousePressed()){  //day mode button
                         gamePanel.getGame().getBg().setY(0);
                         gamePanel.getGame().getFl().setY(0);
-                    }else if(btns()[3].isMousePressed()){
+                    }else if(btns()[3].isMousePressed()){ //night mode button
                         gamePanel.getGame().getBg().setY(-800);
                         gamePanel.getGame().getFl().setY(-800);
-                    }else if(btns()[4].isMousePressed()){
+                    }else if(btns()[4].isMousePressed()){ //default skin button
                         gamePanel.getGame().getPlayer().setSkin(0);
-                    }else if(btns()[5].isMousePressed()){
-                        if(gamePanel.getGame().getCoins() >= 10){
+                    }else if(btns()[5].isMousePressed()){ //button for buying the first skin
+                        if(gamePanel.getGame().getCoins() >= 10){ //if the player has enough coins, the skin equips
                             gamePanel.getGame().getPlayer().setSkin(1);
                             gamePanel.getGame().setCoins(gamePanel.getGame().getCoins()-10);
                         }
-                    }else if(btns()[6].isMousePressed()){
+                    }else if(btns()[6].isMousePressed()){ //button for buying the second skin
                         if(gamePanel.getGame().getCoins() >= 25){
                             gamePanel.getGame().getPlayer().setSkin(2);
                             gamePanel.getGame().setCoins(gamePanel.getGame().getCoins()-25);
                         }
-                    }else if(btns()[7].isMousePressed()){
+                    }else if(btns()[7].isMousePressed()){ //button for buying the third skin
                         if(gamePanel.getGame().getCoins() >= 50){
                             gamePanel.getGame().getPlayer().setSkin(3);
                             gamePanel.getGame().setCoins(gamePanel.getGame().getCoins()-50);

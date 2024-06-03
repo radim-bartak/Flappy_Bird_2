@@ -45,16 +45,18 @@ public class MenuBackground implements ImageImport {
         g.drawImage(img,(int) x,(int) y, width, height,null);
     }
 
+    //method that makes the menu or the shop visible
     public void moveUp(){
-        if(y >= 120 && !shop){
+        if(y >= 120 && !shop){ //menu moves up from offscreen until it is stopped
             y -= moveSpeed;
-        }else if(y >= -680 && shop){
+        }else if(y >= -680 && shop){ //shop moves up from offscreen until it is stopped
             y -= moveSpeed;
         }
     }
 
+    //method that makes the menu or the shop not visible
     public void moveDown(){
-        if(y <= 1000){
+        if(y <= 1000){ //menu and shop move down offscreen
             y += moveSpeed;
         }
     }
